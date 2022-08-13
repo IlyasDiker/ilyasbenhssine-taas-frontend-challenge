@@ -1,12 +1,14 @@
 <template>
-  <div class="HomeView">
-    <span>Home</span>
+  <div class="AuthView">
+    <span>Auth</span>
   </div>
 </template>
 
 <script>
+
+
 export default {
-  name: 'HomeView',
+  name: 'AuthView',
   components: {
 
   }

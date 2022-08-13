@@ -1,12 +1,12 @@
 <template>
-  <div class="HomeView">
+  <div class="AppView">
     <span>App</span>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HomeView',
+  name: 'AppView',
   components: {
 
   }

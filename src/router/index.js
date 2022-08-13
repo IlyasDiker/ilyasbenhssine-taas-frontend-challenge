@@ -19,7 +19,7 @@ const routes = [
   {
     path: '/app',
     name: 'app',
-    component: () => import('../views/HomeView.vue'),
+    component: () => import('../views/AppView.vue'),
     beforeEnter: (to, from, next) =>{
       const accountStore = useAccountStore();
       if(accountStore.isAuthenticated()){

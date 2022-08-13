@@ -1,0 +1,234 @@
+:root{
+    --form-btn-background: rgb(243, 244, 246);
+    --form-btn-font: black;
+
+    --form-btn-background-hover: rgb(229, 231, 235);
+    --form-btn-font-hover: rgb(17, 24, 39);
+
+    --form-btn-transparent-background: rgb(249, 250, 251);
+    --form-btn-transparent: rgb(75, 85, 99);
+
+    --form-btn-outline: rgba(229, 231, 235, 0.659);
+
+    --form-group-background: rgb(243, 244, 246);
+    // --form-group-background: rgb(229, 229, 229);
+
+    --form-input-border: rgb(223, 223, 223);
+    --form-input-background: white;
+    
+}
+
+
+
+input, .input, .button, button, select, textarea{
+    padding: 8px 12px;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: 1px solid rgb(223, 223, 223);
+    transition: 0.2s ease-in-out;
+    text-decoration: none;
+    
+    &.xl{
+        font-size: 1rem;
+        padding: 10px 15px;
+    }
+    &.xxl{
+        font-size: 1.2rem;
+        padding: 13px 22px;
+    }
+    &.small{
+        font-size: .85rem;
+        padding: 5px 10px;
+    }
+    &.square{
+        border-radius: 0px;
+    }
+    &:focus{
+        outline: none;
+        -webkit-box-shadow: 0px 0px 0px 3px var(--form-btn-outline); 
+        box-shadow: 0px 0px 0px 3px var(--form-btn-outline);
+    }
+    &.none{
+        padding: inherit;
+        font-size: inherit;
+        border-radius: inherit;
+        border: none;
+        color: inherit;
+        background: transparent;
+        &:hover{
+            background: none;
+            color: inherit;
+            
+        }
+    }
+    &.icon{
+        width: fit-content;
+        aspect-ratio: 1 / 1;
+        height: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+    }
+}
+
+input, textarea, select{
+    background: var(--form-input-background);
+    border: 1px solid var(--form-input-border);
+    color: var(--ui-font);
+    -webkit-appearance:none;
+    &::placeholder{
+        color: rgb(169, 169, 169);
+    }
+    &.large{
+        width: 100%;
+    }
+    &:focus{
+        border-color: var(--primary-dimmed);
+        -webkit-box-shadow: 0px 0px 0px 2px var(--form-btn-outline); 
+        box-shadow: 0px 0px 0px 2px var(--form-btn-outline);
+    }
+}
+
+.select-wrapper{
+    position: relative;
+    isolation: isolate;
+    select{
+        width: 100%;
+    }
+    &::after{
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        padding: 8px 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Material Icons";
+        content: "\e5cf";
+        color: var(--ui-font);
+        pointer-events: none;
+    }
+}
+textarea{
+    resize: vertical;
+    position: relative;
+}
+
+
+button, .button{
+    background: var(--form-btn-background);
+    color: var(--form-btn-font);
+    border: 1px solid transparent;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    &:hover, &.toggled{
+        background: var(--form-btn-background-hover);
+        color: var(--form-btn-font-hover);
+    }
+    .material-icons, .material-icons-outlined{
+        font-size: inherit;
+    }
+    &.dark{
+        background: rgb(75, 85, 99);
+        color: rgb(243, 244, 246);
+        &:hover, &.toggled{
+            background: rgb(55, 65, 81);
+            color: rgb(229, 231, 235);
+        }
+    }
+    &.danger{
+        background: #fef2f2;
+        color: #991b1b;
+        &:hover, &.toggled{
+            background: #dc2626;
+            color: #fef2f2;
+        }
+    }
+    &.primary{
+        background: var(--primary);
+        color: white;
+        &:hover, &.toggled{
+            background: var(--primary-dimmed);
+            color: white;
+        }
+    }
+    &.secondary{
+        background: rgb(37, 99, 235);
+        color: rgb(239, 246, 255);
+        &:hover, &.toggled{
+            background: rgb(29, 78, 216);
+            color: rgb(219, 234, 254);
+        }
+        
+    }
+    &.transparent{
+        background: transparent;
+        color: var(--form-btn-transparent);
+        &:hover, &.toggled{
+            background: var(--form-btn-transparent-background);
+            color: var(--form-btn-transparent);
+        }
+    }
+    &.large{
+        width: 100%;
+    }
+    &.round{
+        border-radius: 50px;
+    }
+    
+}
+
+.form-container{
+    width: 100%;
+    max-width: 400px;
+    margin: 0px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 20px;
+    border: 1px solid #fafafa;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1)) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.06));
+
+}
+
+.input-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap:5px;
+    .label-wrapper{
+        padding-inline: 10px;
+        color: var(--level-6);
+    }
+}
+
+.input-file-wrapper{
+    width: 100%;
+    min-height: 200px;
+    border-radius: 10px;
+    position: relative;
+    background: white;
+    padding: 50px 20px;
+    border: 2px dashed var(--level-2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+    color: var(--level-5);
+    input{
+        position: absolute;
+        visibility: hidden;
+    }
+    &.drag-over{
+        background: var(--level-2);
+        border: 2px dashed var(--level-3);
+    }
+}

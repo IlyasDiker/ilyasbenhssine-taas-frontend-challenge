@@ -1,0 +1,115 @@
+.row-gap-0{
+    row-gap: 0px;
+}
+.row-gap-5{
+    row-gap: 5px;
+}
+.row-gap-10{
+    row-gap: 10px;
+}
+.row-gap-15{
+    row-gap: 15px;
+}
+.row-gap-20{
+    row-gap: 20px;
+}
+
+.flex{
+    display: flex;
+}
+
+.flex-row{
+    display: flex;
+    flex-direction: row;
+}
+.flex-rowrev{
+    display: flex;
+    flex-direction: row-reverse;
+}
+.flex-col{
+    display: flex;
+    flex-direction: column;
+}
+.flex-colrev{
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.align-center{
+    align-items: center;
+}
+.align-start{
+    align-items: flex-start;
+}
+.align-end{
+    align-items: flex-end;
+}
+
+.justify-center{
+    justify-content: center;
+}
+.justify-start{
+    justify-content: flex-start;
+}
+.justify-end{
+    justify-content: flex-end;
+}
+
+.flex-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-wrap{
+    flex-wrap: wrap;
+}
+
+.space-between{
+    justify-content: space-between;
+}
+.space-evenly{
+    justify-content: space-evenly;
+}
+.space-around{
+    justify-content: space-around;
+}
+
+.gap-0{gap:0px}
+.gap-5{gap:5px}
+.gap-10{gap:10px}
+.gap-15{gap:15px}
+.gap-20{gap:20px}
+.gap-25{gap:25px}
+.gap-30{gap:30px}
+.gap-35{gap:35px}
+.gap-40{gap:40px}
+
+
+.grid-gap-5{
+    gap: 5px;
+    row-gap: 5px;
+    column-gap: 5px;
+}
+.grid-gap-10{
+    gap: 10px;
+    row-gap: 10px;
+    column-gap: 10px;
+}
+.grid-gap-20{
+    gap: 20px;
+    row-gap: 20px;
+    column-gap: 20px;
+}
+.grid-gap-30{
+    gap: 30px;
+    row-gap: 30px;
+    column-gap: 30px;
+}
+
+.w-100{
+    width: 100%;
+}
+.h-100{
+    height: 100%;
+}

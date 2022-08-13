@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Manrope:wght@200;300;400;500;600;700;800&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Manrope', sans-serif;
+}
+
+@import 'grid';
+@import 'layout';
+@import 'typography';
+@import 'button';
+@import 'spacing';
+
+.mono{
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+:root{
+    --container-width: 1600px;
+    --container-medium-width: 800px;
+    --container-small-width: 400px;
+    --container-padding: 30px;
+    --primary: #037a55;
+    --primary-dimmed: #03684b;
+    
+    --background: #0F1011;
+
+    @media (max-width: 1600px) {
+        --container-padding: 25px;
+    }
+    @media (max-width: 400px) {
+        --container-padding: 20px;
+    }
+}
+
+html{
+    scroll-behavior: smooth;
+    scroll-padding: 72px 0 0 0;
+    scroll-snap-type: y proximity;
+
+
+    /* width */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 6px;
+    }
+    
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #242424; 
+    }
+    
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888; 
+        margin: 1px 0px;
+    }
+    
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555; 
+    }
+}
+
+body{
+    background: var(--background);
+    color: white;
+}
+
+.main-container{
+    display: flex;
+    flex-direction: column;
+    scroll-behavior: smooth;
+    scroll-padding: 110px 0 0 0;
+}
+
+
+.no-scroll{
+    overflow: hidden;
+}
+
+.container{
+    width: 100%;
+    max-width: var(--container-width);
+    padding: 0 var(--container-padding);
+    margin: 0 auto;
+    z-index: 1;
+    &.medium{
+        max-width: var(--container-medium-width);
+    }
+    &.small{
+        max-width: var(--container-small-width);
+    }
+}
+
+:root{
+    --base: white;
+    --level-1: #FAFAFA;
+    --level-2: #EAEAEA;
+    --level-3: #999;
+    --level-4: #888;
+    --level-5: #666;
+    --level-6: #444;
+    --level-7: #333;
+    --level-8: #111;
+    --foreground: #000;
+}
+
+#app{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    inset: 0;
+    overflow: auto;
+    scroll-behavior: smooth;
+    scroll-padding: 72px 0 0 0;
+    scroll-snap-type: y proximity;
+}
+
+.skeleton-text{
+    color: transparent;
+    user-select: none;
+    border-radius: 10px;
+    width: fit-content;
+
+    &.large{
+        width: 100%;
+    }
+    &.half{
+        width: 50%;
+    }
+
+    background: linear-gradient(268deg, #e5e7eb, #f3f4f6, #e5e7eb, #f3f4f6);
+    background-size: 800% 800%;
+
+    -webkit-animation: skeleton 3s ease infinite;
+    -moz-animation: skeleton 3s ease infinite;
+    -o-animation: skeleton 3s ease infinite;
+    animation: skeleton 3s ease infinite;
+}
+
+.skeleton {
+    background: linear-gradient(268deg, #e5e7eb, #f3f4f6, #e5e7eb, #f3f4f6);
+    background-size: 800% 800%;
+
+    -webkit-animation: skeleton 2s ease infinite;
+    -moz-animation: skeleton 2s ease infinite;
+    -o-animation: skeleton 2s ease infinite;
+    animation: skeleton 2s ease infinite;
+}
+
+@-webkit-keyframes skeleton {
+    0%{background-position:0% 51%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 51%}
+}
+@-moz-keyframes skeleton {
+    0%{background-position:0% 51%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 51%}
+}
+@-o-keyframes skeleton {
+    0%{background-position:0% 51%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 51%}
+}
+@keyframes skeleton {
+    0%{background-position:0% 51%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 51%}
+}

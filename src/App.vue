@@ -1,12 +1,28 @@
 <template>
-  <NavbarComp/>
   <router-view />
 </template>
 
 <script>
-import NavbarComp from '@/components/navigation/NavbarComp.vue';
+import { useAccountStore } from '@/stores/account';
+import { getClientUser } from './data/api';
 export default {
-    components: { NavbarComp }
+  setup(){
+    const accoutStore = useAccountStore();
+    return {accoutStore};
+  },
+  created () {
+    if(this.accoutStore.hasToken()){
+      getClientUser(this.accoutStore.token).then((accountData)=>{
+        if(accountData){
+          this.accoutStore.registerAccount(accountData);
+          this.$router.push('/app');
+        }
+      },()=>{});
+    }
+  },
+  components: { 
+
+  }
 };
 </script>
 

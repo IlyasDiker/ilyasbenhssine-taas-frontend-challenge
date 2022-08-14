@@ -45,3 +45,20 @@ exports.getClientUser = (token) => {
         })
     })
 }
+
+exports.getRepositories = (token, page, sort) => {
+    return new Promise((resolve, reject) => {
+        axios({
+            method:'get',
+            url:`https://cors-anywhere.herokuapp.com/https://api.github.com/user/repos?page=${page}${sort ? '&sort='+sort : ''}`,
+            headers: {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token.access_token}`
+            }
+        }).then((res)=>{
+            resolve(res.data);
+        }, (err) =>{
+            reject(err);
+        })
+    })
+}

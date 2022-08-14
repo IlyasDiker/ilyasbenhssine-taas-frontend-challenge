@@ -62,3 +62,20 @@ exports.getRepositories = (token, page, sort) => {
         })
     })
 }
+
+exports.getCommits = (token, repo_full_name, page) => {
+    return new Promise((resolve, reject) => {
+        axios({
+            method:'get',
+            url:`https://cors-anywhere.herokuapp.com/https://api.github.com/repos/${repo_full_name}/commits?page=${page}`,
+            headers: {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token.access_token}`
+            }
+        }).then((res)=>{
+            resolve(res.data);
+        }, (err) =>{
+            reject(err);
+        })
+    })
+}

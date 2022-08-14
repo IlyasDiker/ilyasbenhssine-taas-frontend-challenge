@@ -28,6 +28,19 @@ const routes = [
         return next({name:'auth'});
       }
     },
+    children:[
+      {
+        path: '',
+        name: 'app.nocommit',
+        component: () => import('../views/commit/EmptyView.vue')
+      },
+      {
+        path: 'commit/:id(.*)',
+        props: true,
+        name: 'app.commit',
+        component: () => import('../views/commit/CommitView.vue')
+      },
+    ]
   }
 ]
 

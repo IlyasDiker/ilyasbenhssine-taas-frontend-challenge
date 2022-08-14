@@ -7,7 +7,7 @@
           <RepositoryList/>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-8">
-          [COMMITS BLOCK HERE]
+          <router-view />
         </div>
       </div>
     </div>

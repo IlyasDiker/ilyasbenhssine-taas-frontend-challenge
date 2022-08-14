@@ -8,14 +8,14 @@
             </template>
             </select>
         </div>
-        <div class="repository-list-repos">
-            <ul>
+        <div class="repository-list-repos py-2">
+            <ul class="repository-list-repos-wrapper">
                 <template v-for="(repository, index) in getPresentationRepos()" :key="index">
-                    <li>
+                    <router-link role="listitem" :to="`/app/commit/${repository.full_name}`">
                         <RepositoryItem 
                             :name="repository.full_name"
                             :owner-avatar="repository.owner.avatar_url"/>
-                    </li>
+                    </router-link>
                 </template>
                 <li v-if="loadMore">
                     <a class="link" @click="loadMoreRepos()">
@@ -120,6 +120,13 @@ export default {
             display: flex;
             flex-direction: row;
             gap: 5px;
+        }
+        &-repos{
+            &-wrapper{
+                list-style: none;
+                display: flex;
+                flex-direction: column;
+            }
         }
     }
 </style>

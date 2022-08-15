@@ -63,11 +63,28 @@ exports.getRepositories = (token, page, sort) => {
     })
 }
 
+exports.getBranches = (token, repo_full_name, page) => {
+    return new Promise((resolve, reject) => {
+        axios({
+            method:'get',
+            url:`https://cors-anywhere.herokuapp.com/https://api.github.com/repos/${repo_full_name}/branches?page=${page ?? 1}&per_page=100`,
+            headers: {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token.access_token}`
+            }
+        }).then((res)=>{
+            resolve(res.data);
+        }, (err) =>{
+            reject(err);
+        })
+    })
+}
+
 exports.getCommits = (token, repo_full_name, page) => {
     return new Promise((resolve, reject) => {
         axios({
             method:'get',
-            url:`https://cors-anywhere.herokuapp.com/https://api.github.com/repos/${repo_full_name}/commits?page=${page}`,
+            url:`https://cors-anywhere.herokuapp.com/https://api.github.com/repos/${repo_full_name}/commits?page=${page ?? 1}`,
             headers: {
                 "Accept": "application/json",
                 "Authorization": `Bearer ${token.access_token}`

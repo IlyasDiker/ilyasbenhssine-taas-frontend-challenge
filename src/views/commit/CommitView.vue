@@ -1,7 +1,14 @@
 <template>
-  <div class="EmptyVue">
+  <div class="CommitView">
     <h2 class="mb-3">{{$route.params.id}}</h2>
-    <ul>
+    <div class="flex-row mb-4">
+        <select v-model="selectedBranch" class="small">
+            <template v-for="(item, index) in branches" :key="index">
+                <option :value="item.commit.sha">{{item.name}}</option>
+            </template>
+        </select>
+    </div>
+    <ul class="commits-list">
       <template v-for="(item, index) in commits" :key="index">
         <li>
           <CommitItem :commit="item"/>
@@ -12,7 +19,7 @@
 </template>
 
 <script>
-import { getCommits } from '@/data/api';
+import { getBranches, getCommits } from '@/data/api';
 import { useAccountStore } from '@/stores/account';
 import CommitItem from '@/components/commit/CommitItem.vue';
 
@@ -25,8 +32,21 @@ export default {
                     .then((data) => {
                     console.log(data);
                     if (data && data.length > 0) {
+                        this.selectedBranch = data[0].sha;
                         data.forEach((commit) => {
                             this.commits.push(commit);
+                        });
+                    }
+                }, (err) => {
+                    console.log(err);
+                });
+                getBranches(this.accountStore.token, this.$route.params.id)
+                    .then((data) => {
+                    console.log(data);
+                    if (data && data.length > 0) {
+                        data.reverse();
+                        data.forEach((commit) => {
+                            this.branches.push(commit);
                         });
                     }
                 }, (err) => {
@@ -50,6 +70,8 @@ export default {
     data() {
         return {
             paginationCount: 1,
+            selectedBranch: null,
+            branches: [],
             commits: []
         };
     },
@@ -61,5 +83,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .CommitView{
+        display: flex;
+        flex-direction: column;
+    }
 
+    .commits-list{
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        gap: 10px;
+    }
 </style>

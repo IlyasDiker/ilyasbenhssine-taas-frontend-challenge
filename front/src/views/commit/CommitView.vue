@@ -38,7 +38,7 @@ export default {
                             this.commits.push(commit);
                         });
                     }
-                    if(data.length < 100){
+                    if(data.length < 30){
                         this.paginationEnd = true;
                     }
                     this.isLoading = false;
@@ -59,34 +59,35 @@ export default {
                 });
             }
         },
-        LoadMore(){
+        loadMore(){
+            console.log(this.isLoading , this.paginationEnd);
             if(!this.isLoading && !this.paginationEnd){
-                // this.isLoading = true;
+                this.isLoading = true;
                 this.paginationCount++;
-                console.log('call API');
-                // getCommits(this.accountStore.token, this.$route.params.id, this.paginationCount)
-                //     .then((data) => {
-                //         console.log(data);
-                //         if (data && data.length > 0) {
-                //             data.forEach((commit) => {
-                //                 data.reverse();
-                //                 this.commits.push(commit);
-                //             });
-                //         }
-                //         if(data.length < 100){
-                //             this.paginationEnd = true;
-                //         }
-                //         this.isLoading = false;
-                //     }, (err) => {
-                //         console.log(err);
-                //     });
+                getCommits(this.accountStore.token, this.$route.params.id, this.paginationCount)
+                    .then((data) => {
+                        console.log(data);
+                        if (data && data.length > 0) {
+                            data.forEach((commit) => {
+                                data.reverse();
+                                this.commits.push(commit);
+                            });
+                        }
+                        if(data.length < 30){
+                            this.paginationEnd = true;
+                        }
+                        this.isLoading = false;
+                    }, (err) => {
+                        console.log(err);
+                        this.isLoading = false;
+                    });
             }
         },
         handleScroll(){
             let commitListBoundingBox = document.querySelector('#commitsList').getBoundingClientRect();
             if(commitListBoundingBox){
                 if(commitListBoundingBox.bottom < window.innerHeight){
-                    this.LoadMore();
+                    this.loadMore();
                 }
             }
         }
@@ -116,6 +117,9 @@ export default {
     mounted(){
         window.addEventListener("scroll", this.handleScroll)
     }, 
+    unmounted(){
+        window.removeEventListener("scroll", this.handleScroll)
+    },
     created() {
         this.LoadCommits();
     },

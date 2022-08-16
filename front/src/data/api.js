@@ -1,5 +1,7 @@
 const { default: axios } = require("axios");
 
+const API_URL = process.env.VUE_APP_API_URL;
+
 exports.getAuthLink = () => {
     const base_url = "https://github.com/login/oauth/authorize"
     const client_id = process.env.VUE_APP_CLIENT_ID;
@@ -10,15 +12,11 @@ exports.getAuthLink = () => {
 
 exports.authorizeClient = (code) => {
     return new Promise((resolve, reject) => {
-        const client_id = process.env.VUE_APP_CLIENT_ID;
-        const client_secret = process.env.VUE_APP_GITHUB_OAUTH;
         axios({
             method:'post',
-            url:'https://cors-anywhere.herokuapp.com/https://github.com/login/oauth/access_token',
+            url:`${API_URL}/api/auth`,
             headers: {"Accept": "application/json"},
             data:{
-                client_id: client_id,
-                client_secret: client_secret,
                 code: code
             }
         }).then((res)=>{
@@ -33,10 +31,10 @@ exports.getClientUser = (token) => {
     return new Promise((resolve, reject) => {
         axios({
             method:'get',
-            url:'https://cors-anywhere.herokuapp.com/https://api.github.com/user',
+            url:`${API_URL}/api/user`,
             headers: {
                 "Accept": "application/json",
-                "Authorization": `Bearer ${token.access_token}`
+                "Authorization": `Bearer ${token}`
             }
         }).then((res)=>{
             resolve(res.data);
@@ -50,10 +48,10 @@ exports.getRepositories = (token, page, sort) => {
     return new Promise((resolve, reject) => {
         axios({
             method:'get',
-            url:`https://cors-anywhere.herokuapp.com/https://api.github.com/user/repos?page=${page}${sort ? '&sort='+sort : ''}`,
+            url:`${API_URL}/api/repositories?page=${page}${sort ? '&sort='+sort : ''}`,
             headers: {
                 "Accept": "application/json",
-                "Authorization": `Bearer ${token.access_token}`
+                "Authorization": `Bearer ${token}`
             }
         }).then((res)=>{
             resolve(res.data);
@@ -63,14 +61,14 @@ exports.getRepositories = (token, page, sort) => {
     })
 }
 
-exports.getBranches = (token, repo_full_name, page) => {
+exports.getBranches = (token, repo_full_name) => {
     return new Promise((resolve, reject) => {
         axios({
             method:'get',
-            url:`https://cors-anywhere.herokuapp.com/https://api.github.com/repos/${repo_full_name}/branches?page=${page ?? 1}&per_page=100`,
+            url:`${API_URL}/api/branches?repo=${repo_full_name}&per_page=100`,
             headers: {
                 "Accept": "application/json",
-                "Authorization": `Bearer ${token.access_token}`
+                "Authorization": `Bearer ${token}`
             }
         }).then((res)=>{
             resolve(res.data);
@@ -84,10 +82,10 @@ exports.getCommits = (token, repo_full_name, page) => {
     return new Promise((resolve, reject) => {
         axios({
             method:'get',
-            url:`https://cors-anywhere.herokuapp.com/https://api.github.com/repos/${repo_full_name}/commits?page=${page ?? 1}`,
+            url:`${API_URL}/api/commits?repo=${repo_full_name}&page=${page ?? 1}`,
             headers: {
                 "Accept": "application/json",
-                "Authorization": `Bearer ${token.access_token}`
+                "Authorization": `Bearer ${token}`
             }
         }).then((res)=>{
             resolve(res.data);

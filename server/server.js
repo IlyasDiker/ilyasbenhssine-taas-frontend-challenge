@@ -3,6 +3,7 @@ const express = require('express')
 const cors = require('cors')
 const axios = require('axios')
 const bodyParser = require('body-parser')
+const jwt = require('jsonwebtoken')
 
 const app = express();
 app.use(bodyParser.json());
@@ -30,18 +31,147 @@ app.post('/api/auth', async (req, res) => {
                 code: body.code
             }
         }).then((data)=>{
-            
-            res.send(data.data);
+            if(!data.error){
+                console.log(data);
+                let token = jwt.sign(data.data, process.env.JWT_SECRET);
+                res.send({
+                    token: token
+                })
+            } else {
+                res.send(data.data);
+            }
         }, (err) =>{
-            res.send(err.message);
+            throwErr(res, err);
         })
     } else {
         res.send({error: "No code was provided"})
     }
 })
 
+app.get('/api/user', async (req, res)=>{
+    validateJWT(req).then((token) => {
+        axios({
+            method:'get',
+            url:'https://api.github.com/user',
+            headers: {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token.access_token}`
+            }
+        }).then((data)=>{
+            res.send(data.data);
+        }, (err) =>{
+            throwErr(res, err);
+        })
+    }, (err) => {
+        throwErr(res, err);
+    })
+})
+
+app.get('/api/repositories', async (req, res)=>{
+    let page = req.query.page
+    let sort = req.query.sort
+    validateJWT(req).then((token) => {
+        axios({
+            method:'get',
+            url:`https://api.github.com/user/repos?page=${page}${sort ? '&sort='+sort : ''}`,
+            headers: {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token.access_token}`
+            }
+        }).then((data)=>{
+            res.send(data.data);
+        }, (err) =>{
+            throwErr(res, err);
+        })
+    }, (err) => {
+        throwErr(res, err);
+    })
+})
+
+app.get('/api/branches', async (req, res)=>{
+    let repo = req.query.repo
+    console.log(repo);
+    validateJWT(req).then((token) => {
+        axios({
+            method:'get',
+            url:`https://api.github.com/repos/${repo}/branches?per_page=100`,
+            headers: {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token.access_token}`
+            }
+        }).then((data)=>{
+            res.send(data.data);
+        }, (err) =>{
+            throwErr(res, err);
+        })
+    }, (err) => {
+        throwErr(res, err);
+    })
+})
+
+app.get('/api/commits', async (req, res)=>{
+    let repo = req.query.repo
+    let page = req.query.page
+    console.log(repo);
+    validateJWT(req).then((token) => {
+        axios({
+            method:'get',
+            url:`https://api.github.com/repos/${repo}/commits?page=${page ?? 1}`,
+            headers: {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token.access_token}`
+            }
+        }).then((data)=>{
+            res.send(data.data);
+        }, (err) =>{
+            throwErr(res, err);
+        })
+    }, (err) => {
+        throwErr(res, err);
+    })
+})
+
+app.get('/api/commits', async (req, res)=>{
+    let repo = req.query.repo
+    let page = req.query.page
+    console.log(repo);
+    validateJWT(req).then((token) => {
+        axios({
+            method:'get',
+            url:`https://api.github.com/repos/${repo}/commits?page=${page ?? 1}`,
+            headers: {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token.access_token}`
+            }
+        }).then((data)=>{
+            res.send(data.data);
+        }, (err) =>{
+            throwErr(res, err);
+        })
+    }, (err) => {
+        throwErr(res, err);
+    })
+})
+
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}!`)
 });
-  
+
+validateJWT = (req) =>{
+    return new Promise((resolve, reject)=>{
+        let authHeader = req.headers['authorization']
+        let token = authHeader && authHeader.split(' ')[1]
+        jwt.verify(token, process.env.JWT_SECRET, (err, token)=>{
+            if(err){
+                reject(err);
+            } else {
+                resolve(token);
+            }
+        })
+    })
+}
+
+throwErr = (res, err) => {
+    res.send({error: err.message});
+}

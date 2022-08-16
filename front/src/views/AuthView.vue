@@ -19,8 +19,8 @@ export default {
     
     if(this.$route.query.code){
       authorizeClient(this.$route.query.code).then((tokenData)=>{
-        if(tokenData.access_token){
-          this.accoutStore.setToken(tokenData);
+        if(tokenData.token){
+          this.accoutStore.setToken(tokenData.token);
           getClientUser(this.accoutStore.token).then((accountData)=>{
             if(accountData){
               this.accoutStore.registerAccount(accountData);

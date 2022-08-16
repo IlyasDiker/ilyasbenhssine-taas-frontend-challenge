@@ -32,7 +32,6 @@ app.post('/api/auth', async (req, res) => {
             }
         }).then((data)=>{
             if(!data.error){
-                console.log(data);
                 let token = jwt.sign(data.data, process.env.JWT_SECRET);
                 res.send({
                     token: token
@@ -90,7 +89,6 @@ app.get('/api/repositories', async (req, res)=>{
 
 app.get('/api/branches', async (req, res)=>{
     let repo = req.query.repo
-    console.log(repo);
     validateJWT(req).then((token) => {
         axios({
             method:'get',
@@ -112,7 +110,6 @@ app.get('/api/branches', async (req, res)=>{
 app.get('/api/commits', async (req, res)=>{
     let repo = req.query.repo
     let page = req.query.page
-    console.log(repo);
     validateJWT(req).then((token) => {
         axios({
             method:'get',
@@ -134,7 +131,6 @@ app.get('/api/commits', async (req, res)=>{
 app.get('/api/commits', async (req, res)=>{
     let repo = req.query.repo
     let page = req.query.page
-    console.log(repo);
     validateJWT(req).then((token) => {
         axios({
             method:'get',

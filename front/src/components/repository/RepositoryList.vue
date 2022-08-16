@@ -1,28 +1,30 @@
 <template>
-    <div class="repository-list">
-        <div class="repository-list-filter">
-            <input type="search" placeholder="Search by name ..." class="large" v-model="searchField">
-            <select v-model="sortFilter">
-            <template v-for="(item, index) in filterOptions" :key="index">
-                <option :value="item.id">{{item.label}}</option>
-            </template>
-            </select>
-        </div>
-        <div class="repository-list-repos py-2">
-            <ul class="repository-list-repos-wrapper">
-                <template v-for="(repository, index) in getPresentationRepos()" :key="index">
-                    <router-link role="listitem" :to="`/app/commit/${repository.full_name}`">
-                        <RepositoryItem 
-                            :name="repository.full_name"
-                            :owner-avatar="repository.owner.avatar_url"/>
-                    </router-link>
+    <div class="repository-list-wrapper">
+        <div class="repository-list">
+            <div class="repository-list-filter">
+                <input type="search" placeholder="Search by name ..." class="large" v-model="searchField">
+                <select v-model="sortFilter">
+                <template v-for="(item, index) in filterOptions" :key="index">
+                    <option :value="item.id">{{item.label}}</option>
                 </template>
-                <li v-if="loadMore">
-                    <a class="link" @click="loadMoreRepos()">
-                        Load more
-                    </a>
-                </li>
-            </ul>
+                </select>
+            </div>
+            <div class="repository-list-repos py-2">
+                <ul class="repository-list-repos-wrapper">
+                    <template v-for="(repository, index) in getPresentationRepos()" :key="index">
+                        <router-link role="listitem" :to="`/app/commit/${repository.full_name}`">
+                            <RepositoryItem 
+                                :name="repository.full_name"
+                                :owner-avatar="repository.owner.avatar_url"/>
+                        </router-link>
+                    </template>
+                    <li v-if="loadMore">
+                        <a class="link" @click="loadMoreRepos()">
+                            Load more
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </template>
@@ -116,12 +118,24 @@ export default {
     .repository-list{
         display: flex;
         flex-direction: column;
+        position: relative;
+        height: 100%;
+        max-height: 100%;
+        overflow: hidden;
+        &-wrapper{
+            position: sticky;
+            top: 71px;
+            max-height: calc(100vh - 71px - 3.5rem);
+            overflow: auto;
+        }
         &-filter{
             display: flex;
             flex-direction: row;
             gap: 5px;
         }
         &-repos{
+            flex-grow: 1;
+            overflow: auto;
             &-wrapper{
                 list-style: none;
                 display: flex;

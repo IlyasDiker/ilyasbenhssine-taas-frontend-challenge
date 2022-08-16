@@ -13,7 +13,7 @@ export default {
   created () {
     if(this.accoutStore.hasToken()){
       getClientUser(this.accoutStore.token).then((accountData)=>{
-        if(accountData){
+        if(accountData && !accountData.error){
           this.accoutStore.registerAccount(accountData);
           this.$router.push('/app');
         }

@@ -78,11 +78,11 @@ exports.getBranches = (token, repo_full_name) => {
     })
 }
 
-exports.getCommits = (token, repo_full_name, page) => {
+exports.getCommits = (token, repo_full_name, page, sha) => {
     return new Promise((resolve, reject) => {
         axios({
             method:'get',
-            url:`${API_URL}/api/commits?repo=${repo_full_name}&page=${page ?? 1}`,
+            url:`${API_URL}/api/commits?repo=${repo_full_name}&page=${page ?? 1}${sha ? '&sha='+sha : ''}`,
             headers: {
                 "Accept": "application/json",
                 "Authorization": `Bearer ${token}`

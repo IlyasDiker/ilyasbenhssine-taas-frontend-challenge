@@ -31,7 +31,6 @@ export default {
             if (this.$route.params.id) {
                 getCommits(this.accountStore.token, this.$route.params.id, this.paginationCount)
                     .then((data) => {
-                    console.log(data);
                     if (data && data.length > 0) {
                         this.selectedBranch = data[0].sha;
                         data.forEach((commit) => {
@@ -47,9 +46,8 @@ export default {
                 });
                 getBranches(this.accountStore.token, this.$route.params.id)
                     .then((data) => {
-                    console.log(data);
+                    this.branches = []
                     if (data && data.length > 0) {
-                        data.reverse();
                         data.forEach((commit) => {
                             this.branches.push(commit);
                         });
@@ -60,13 +58,11 @@ export default {
             }
         },
         loadMore(){
-            console.log(this.isLoading , this.paginationEnd);
             if(!this.isLoading && !this.paginationEnd){
                 this.isLoading = true;
                 this.paginationCount++;
                 getCommits(this.accountStore.token, this.$route.params.id, this.paginationCount)
                     .then((data) => {
-                        console.log(data);
                         if (data && data.length > 0) {
                             data.forEach((commit) => {
                                 data.reverse();
@@ -78,7 +74,7 @@ export default {
                         }
                         this.isLoading = false;
                     }, (err) => {
-                        console.log(err);
+                        console.error(err);
                         this.isLoading = false;
                     });
             }
@@ -94,7 +90,31 @@ export default {
     },
     watch: {
         id() {
+            this.commits = null;
+            this.branches = null;
             this.LoadCommits();
+        },
+        selectedBranch(to, from) {
+            if(from && to){
+                console.log(to, from);
+                getCommits(this.accountStore.token, this.$route.params.id, this.paginationCount, to)
+                    .then((data) => {
+                        this.commits = [];
+                        if (data && data.length > 0) {
+                            data.forEach((commit) => {
+                                data.reverse();
+                                this.commits.push(commit);
+                            });
+                        }
+                        if(data.length < 30){
+                            this.paginationEnd = true;
+                        }
+                        this.isLoading = false;
+                    }, (err) => {
+                        console.error(err);
+                        this.isLoading = false;
+                    });
+            }
         }
     },
     props: {
@@ -110,8 +130,8 @@ export default {
             paginationEnd: false,
             selectedBranch: null,
             isLoading: false,
-            branches: [],
-            commits: []
+            branches: null,
+            commits: null
         };
     },
     mounted(){

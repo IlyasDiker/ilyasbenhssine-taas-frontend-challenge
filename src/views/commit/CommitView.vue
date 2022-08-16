@@ -1,14 +1,14 @@
 <template>
   <div class="CommitView">
-    <h2 class="mb-3">{{$route.params.id}}</h2>
-    <div class="flex-row mb-4">
+    <h2 class="text-3xl mb-4">{{$route.params.id}}</h2>
+    <div class="flex-row mb-3">
         <select v-model="selectedBranch" class="small">
             <template v-for="(item, index) in branches" :key="index">
                 <option :value="item.commit.sha">{{item.name}}</option>
             </template>
         </select>
     </div>
-    <ul class="commits-list">
+    <ul class="commits-list" id="commitsList">
       <template v-for="(item, index) in commits" :key="index">
         <li>
           <CommitItem :commit="item"/>
@@ -26,6 +26,7 @@ import CommitItem from '@/components/commit/CommitItem.vue';
 export default {
     methods: {
         LoadCommits() {
+            this.isLoading = true;
             this.commits = [];
             if (this.$route.params.id) {
                 getCommits(this.accountStore.token, this.$route.params.id, this.paginationCount)
@@ -37,6 +38,10 @@ export default {
                             this.commits.push(commit);
                         });
                     }
+                    if(data.length < 100){
+                        this.paginationEnd = true;
+                    }
+                    this.isLoading = false;
                 }, (err) => {
                     console.log(err);
                 });
@@ -52,6 +57,37 @@ export default {
                 }, (err) => {
                     console.log(err);
                 });
+            }
+        },
+        LoadMore(){
+            if(!this.isLoading && !this.paginationEnd){
+                // this.isLoading = true;
+                this.paginationCount++;
+                console.log('call API');
+                // getCommits(this.accountStore.token, this.$route.params.id, this.paginationCount)
+                //     .then((data) => {
+                //         console.log(data);
+                //         if (data && data.length > 0) {
+                //             data.forEach((commit) => {
+                //                 data.reverse();
+                //                 this.commits.push(commit);
+                //             });
+                //         }
+                //         if(data.length < 100){
+                //             this.paginationEnd = true;
+                //         }
+                //         this.isLoading = false;
+                //     }, (err) => {
+                //         console.log(err);
+                //     });
+            }
+        },
+        handleScroll(){
+            let commitListBoundingBox = document.querySelector('#commitsList').getBoundingClientRect();
+            if(commitListBoundingBox){
+                if(commitListBoundingBox.bottom < window.innerHeight){
+                    this.LoadMore();
+                }
             }
         }
     },
@@ -70,11 +106,16 @@ export default {
     data() {
         return {
             paginationCount: 1,
+            paginationEnd: false,
             selectedBranch: null,
+            isLoading: false,
             branches: [],
             commits: []
         };
     },
+    mounted(){
+        window.addEventListener("scroll", this.handleScroll)
+    }, 
     created() {
         this.LoadCommits();
     },

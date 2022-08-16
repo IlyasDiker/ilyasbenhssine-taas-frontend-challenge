@@ -32,7 +32,8 @@ export default {
         padding: 10px 15px;
         gap: 8px;
         border: 1px solid #27272a;
-        border-radius: 5px;
+        background: #18181b;
+        border-radius: 10px;
         &-avatar{
             width: 20px;
             height: 20px;

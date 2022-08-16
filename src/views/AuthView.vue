@@ -1,7 +1,7 @@
 <template>
   <div class="AuthView">
     <template v-if="!accoutStore.account">
-      <a :href="authorisation_link">Authorize my github account</a>
+      <a :href="authorisation_link" class="button primary">Authorize my github account</a>
     </template>
   </div>
 </template>
@@ -47,3 +47,15 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.AuthView{
+  height: 100%;
+  min-height: 100vh;
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+</style>

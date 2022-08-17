@@ -128,6 +128,10 @@ export default {
         border: 1px solid #20232A;
         border-radius: 10px;
         overflow: hidden;
+        *::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
         &-wrapper{
             position: sticky;
             top: 71px;
@@ -148,10 +152,6 @@ export default {
                 list-style: none;
                 display: flex;
                 flex-direction: column;
-            }
-            ::-webkit-scrollbar {
-                width: 3px;
-                height: 3px;
             }
         }
         .load-more{

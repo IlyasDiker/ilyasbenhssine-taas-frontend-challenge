@@ -1,19 +1,28 @@
 <template>
   <div class="CommitView">
-    <h2 class="text-3xl mb-4">{{$route.params.id}}</h2>
+    <h2 class="text-3xl mb-4 fw-600">{{$route.params.id}}</h2>
     <div class="flex-row mb-3">
-        <select v-model="selectedBranch" class="small">
-            <template v-for="(item, index) in branches" :key="index">
-                <option :value="item.commit.sha">{{item.name}}</option>
-            </template>
-        </select>
+            <select v-model="selectedBranch">
+                <template v-for="(item, index) in branches" :key="index">
+                    <option :value="item.commit.sha">{{item.name}}</option>
+                </template>
+            </select>
     </div>
     <ul class="commits-list" id="commitsList">
-      <template v-for="(item, index) in commits" :key="index">
-        <li>
-          <CommitItem :commit="item"/>
-        </li>
-      </template>
+        <template v-if="commits.length > 0">
+            <template v-for="(item, index) in commits" :key="index">
+                <li>
+                    <CommitItem :commit="item"/>
+                </li>
+            </template>
+        </template>
+        <template v-else>
+            <template v-for="x in Array(4)" :key="x">
+                <li>
+                    <CommitSkeleton/>
+                </li>
+            </template>
+        </template>
     </ul>
   </div>
 </template>
@@ -22,6 +31,7 @@
 import { getBranches, getCommits } from '@/data/api';
 import { useAccountStore } from '@/stores/account';
 import CommitItem from '@/components/commit/CommitItem.vue';
+import CommitSkeleton from '@/components/commit/CommitSkeleton.vue';
 
 export default {
     methods: {
@@ -59,9 +69,10 @@ export default {
         },
         loadMore(){
             if(!this.isLoading && !this.paginationEnd){
+                console.log('call more');
                 this.isLoading = true;
                 this.paginationCount++;
-                getCommits(this.accountStore.token, this.$route.params.id, this.paginationCount)
+                getCommits(this.accountStore.token, this.$route.params.id, this.paginationCount, this.selectedBranch)
                     .then((data) => {
                         if (data && data.length > 0) {
                             data.forEach((commit) => {
@@ -96,7 +107,6 @@ export default {
         },
         selectedBranch(to, from) {
             if(from && to){
-                console.log(to, from);
                 getCommits(this.accountStore.token, this.$route.params.id, this.paginationCount, to)
                     .then((data) => {
                         this.commits = [];
@@ -143,7 +153,7 @@ export default {
     created() {
         this.LoadCommits();
     },
-    components: { CommitItem }
+    components: { CommitItem, CommitSkeleton }
 }
 </script>
 

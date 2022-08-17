@@ -2,9 +2,9 @@
     <router-link 
         :to="`/app/commit/${name}`" 
         role="listitem" 
-        class="repository-item">
+        class="repository-item" :title="name">
         <img :src="ownerAvatar" class="repository-item-avatar" width="20">
-        <span class="text-sm repository-item-label">{{name}}</span>
+        <span class="text-sm repository-item-label line-clamp-1">{{name}}</span>
     </router-link>
 </template>
 

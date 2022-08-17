@@ -125,6 +125,10 @@ export default {
         id() {
             this.commits = null;
             this.branches = null;
+            this.paginationCount= 1;
+            this.paginationEnd= false;
+            this.selectedBranch= null;
+            this.isLoading= false;
             this.LoadCommits();
         },
         selectedBranch(to, from) {
@@ -141,10 +145,8 @@ export default {
                         if(data.length < 30){
                             this.paginationEnd = true;
                         }
-                        this.isLoading = false;
                     }, (err) => {
                         console.error(err);
-                        this.isLoading = false;
                     });
             }
         }

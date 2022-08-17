@@ -49,4 +49,8 @@ const router = createRouter({
   routes
 })
 
+router.beforeEach(()=>{
+  window.scrollTop = 0;
+})
+
 export default router

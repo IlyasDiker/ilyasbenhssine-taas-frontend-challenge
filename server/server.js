@@ -131,10 +131,11 @@ app.get('/api/commits', async (req, res)=>{
 app.get('/api/commits', async (req, res)=>{
     let repo = req.query.repo
     let page = req.query.page
+    let sha = req.query.sha
     validateJWT(req).then((token) => {
         axios({
             method:'get',
-            url:`https://api.github.com/repos/${repo}/commits?page=${page ?? 1}`,
+            url:`https://api.github.com/repos/${repo}/commits?page=${page ?? 1}${sha ? '&sha='+sha : ''}`,
             headers: {
                 "Accept": "application/json",
                 "Authorization": `Bearer ${token.access_token}`

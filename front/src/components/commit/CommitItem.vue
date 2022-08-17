@@ -1,12 +1,12 @@
 <template>
-    <div class="commit-item">
+    <div class="commit-item" role="listitem">
         <span>{{commit.commit.message}}</span>
         <div class="commit-item-desc-row">
             <template v-if="commit.author">
                 <img :src="commit.author.avatar_url" class="commit-item-avatar" width="20">
                 <span>{{commit.author.login}}</span>
             </template>
-            <span class="text-xs fw-300 op-7">commited {{formatDate(commit.commit.committer.date)}} ago</span>
+            <span class="text-xs fw-300 op-7" :title="formatDateTime(commit.commit.committer.date)">commited {{formatDate(commit.commit.committer.date)}} ago</span>
         </div>
     </div>
 </template>
@@ -17,6 +17,9 @@ export default {
     methods: {
         formatDate(date){
             return moment(date).fromNow(true);
+        },
+        formatDateTime(date){
+            return moment(date).format('MMMM Do YYYY, h:mm a');
         }
     },
    props:{
@@ -31,9 +34,12 @@ export default {
         flex-direction: column;
         padding: 10px 15px;
         gap: 8px;
-        border: 1px solid #27272a;
+
         background: #18181b;
-        border-radius: 10px;
+        border-bottom: 1px solid #27272a;
+        &:last-child{
+            border: none;
+        }
         &-avatar{
             width: 20px;
             height: 20px;

@@ -18,6 +18,7 @@
         border: 1px solid #27272a96;
         background: #18181b4d;
         border-radius: 10px;
+        margin-bottom: 10px;
         &-avatar{
             width: 20px;
             height: 20px;

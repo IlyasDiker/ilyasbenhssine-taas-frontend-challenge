@@ -1,8 +1,9 @@
 <template>
   <div class="AuthView">
     <template v-if="!accoutStore.account">
-      <a :href="authorisation_link" class="button primary">Authorize my github account</a>
+      <a :href="authorisation_link" class="button primary xl">Authorize my github account</a>
     </template>
+    <img src="@/assets/RasterFloor.webp" role="presentation" class="AuthView_background">
   </div>
 </template>
 
@@ -57,5 +58,19 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background: linear-gradient(#1e3b8a3a ,transparent);
+  position: relative;
+  overflow: hidden;
+  &_background{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+    z-index: -1;
+    transform: translateY(20%);
+    opacity: .5;
+  }
 }
 </style>

@@ -9,20 +9,23 @@
                 </template>
                 </select>
             </div>
-            <div class="repository-list-repos py-2">
+            <div class="repository-list-repos">
                 <ul class="repository-list-repos-wrapper">
-                    <template v-for="(repository, index) in getPresentationRepos()" :key="index">
-                        <router-link role="listitem" :to="`/app/commit/${repository.full_name}`">
+                    <template v-if="repositories.length > 0">
+                        <template v-for="(repository, index) in getPresentationRepos()" :key="index">
                             <RepositoryItem 
                                 :name="repository.full_name"
                                 :owner-avatar="repository.owner.avatar_url"/>
-                        </router-link>
-                    </template>
-                    <li v-if="loadMore">
-                        <a class="link" @click="loadMoreRepos()">
-                            Load more
+                        </template>
+                        <a @click="loadMoreRepos()" v-if="loadMore" role="listitem" class="load-more text-sm">
+                            Show more
                         </a>
-                    </li>
+                    </template>
+                    <template v-else>
+                        <template v-for="x in Array(5)" :key="x">
+                            <RepositorySkeleton/>
+                        </template>
+                    </template>
                 </ul>
             </div>
         </div>
@@ -32,6 +35,7 @@
 <script>
 import { useAccountStore } from '@/stores/account';
 import RepositoryItem from "./RepositoryItem.vue";
+import RepositorySkeleton from './RepositorySkeleton.vue';
 import { getRepositories } from '@/data/api';
 export default {
     watch: {
@@ -110,7 +114,7 @@ export default {
             repositories: []
         };
     },
-    components: { RepositoryItem }
+    components: { RepositoryItem, RepositorySkeleton }
 }
 </script>
 
@@ -121,25 +125,42 @@ export default {
         position: relative;
         height: 100%;
         max-height: 100%;
+        border: 1px solid #20232A;
+        border-radius: 10px;
         overflow: hidden;
         &-wrapper{
             position: sticky;
             top: 71px;
             max-height: calc(100vh - 71px - 3.5rem);
-            overflow: auto;
         }
         &-filter{
             display: flex;
             flex-direction: row;
             gap: 5px;
+            padding: 10px;
         }
         &-repos{
             flex-grow: 1;
             overflow: auto;
+            max-height: 400px;
+            position: relative;
             &-wrapper{
                 list-style: none;
                 display: flex;
                 flex-direction: column;
+            }
+            ::-webkit-scrollbar {
+                width: 3px;
+                height: 3px;
+            }
+        }
+        .load-more{
+            padding: 8px 10px;
+            color: white;
+            text-align: center;
+            &:focus-within, &:hover{
+                background: rgba(133, 133, 133, 0.158);
+                text-decoration: underline;
             }
         }
     }

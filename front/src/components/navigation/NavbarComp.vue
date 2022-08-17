@@ -34,7 +34,7 @@ export default {
 
 <style lang="scss" scoped>
     $avatar-size: 30px;
-    $navbar-background: #20232A;
+    $navbar-background: #20232aea;
 
     .navbar{
         position: sticky;
@@ -47,6 +47,9 @@ export default {
         align-items: center;
         justify-content: space-between;
         background: $navbar-background;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        z-index: 100;
         &-hero-logo{
             color: white;
             svg{

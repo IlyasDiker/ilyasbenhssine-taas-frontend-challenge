@@ -94,3 +94,21 @@ exports.getCommits = (token, repo_full_name, page, sha) => {
         })
     })
 }
+
+exports.getSearchRepositories = (token, query, user) => {
+    if(!query || !user) return;
+    return new Promise((resolve, reject) => {
+        axios({
+            method:'get',
+            url:`${API_URL}/api/search?q=${query}${user? '%20user:'+user : ''}`,
+            headers: {
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        }).then((res)=>{
+            resolve(res.data);
+        }, (err) =>{
+            reject(err);
+        })
+    })
+}

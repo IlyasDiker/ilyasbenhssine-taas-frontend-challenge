@@ -2,7 +2,12 @@
     <div class="repository-list-wrapper">
         <div class="repository-list">
             <div class="repository-list-filter">
-                <input type="search" placeholder="Search by name ..." class="large" v-model="searchField">
+                <label class="input-wrapper">
+                    <input type="search" placeholder="Search by name ..." class="large" v-model="searchField" ref="searchInput">
+                    <div class="suffix">
+                        <kbd>Ctrl</kbd>+<kbd>K</kbd>
+                    </div>
+                </label>
                 <select v-model="sortFilter">
                 <template v-for="(item, index) in filterOptions" :key="index">
                     <option :value="item.id">{{item.label}}</option>
@@ -16,6 +21,13 @@
                             <RepositoryItem 
                                 :name="repository.full_name"
                                 :owner-avatar="repository.owner.avatar_url"/>
+                        </template>
+                        <template v-if="getPresentationRepos().length == 0">
+                            <template v-for="(repository, index) in presentationRepos" :key="index">
+                                <RepositoryItem 
+                                    :name="repository.full_name"
+                                    :owner-avatar="repository.owner.avatar_url"/>
+                            </template>
                         </template>
                         <a @click="loadMoreRepos()" v-if="loadMore" role="listitem" class="load-more text-sm">
                             Show more
@@ -37,12 +49,23 @@ import { useAccountStore } from '@/stores/account';
 import RepositoryItem from "./RepositoryItem.vue";
 import RepositorySkeleton from './RepositorySkeleton.vue';
 import { getRepositories } from '@/data/api';
+import { getSearchRepositories } from '../../data/api';
 export default {
     watch: {
         sortFilter(){
             this.paginationPage = 1;
             this.repositories = [];
             this.getRepos();
+        },
+        searchField(to){
+            if(to.length > 3 && this.getPresentationRepos().length == 0){
+                getSearchRepositories(this.accountStore.token, to, this.accountStore.account.login)
+                    .then((data)=>{
+                        this.presentationRepos = data.items;
+                    }, (err)=>{
+                        console.error(err);
+                    })
+            }
         }
     },
     methods: {
@@ -76,7 +99,13 @@ export default {
             })
         },
         getPresentationRepos(){
-            return this.repositories.filter(x => x.name.toLowerCase().includes(this.searchField.toLowerCase()))
+            return this.repositories.filter(x => x.name.toLowerCase().includes(this.searchField.toLowerCase()));
+        },
+        keyDown(e){
+            if(e.ctrlKey && e.code == 'KeyK'){
+                e.preventDefault();
+                this.$refs.searchInput.focus();
+            }
         }
     },
     setup () {
@@ -85,6 +114,12 @@ export default {
     },
     created () {
         this.getRepos();
+    },
+    mounted(){
+        window.addEventListener('keydown', this.keyDown)
+    },
+    unmounted() {
+        window.removeEventListener('keydown', this.keyDown)
     },
     name: "RepositoryList",
     data() {
@@ -111,7 +146,8 @@ export default {
                     label: "Preated"
                 }
             ],
-            repositories: []
+            repositories: [],
+            presentationRepos: []
         };
     },
     components: { RepositoryItem, RepositorySkeleton }
@@ -162,6 +198,25 @@ export default {
                 background: rgba(133, 133, 133, 0.158);
                 text-decoration: underline;
             }
+        }
+    }
+
+    .input-wrapper{
+        position: relative;
+        flex-grow: 1;
+        .suffix{
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: row;
+            gap: 5px;
+            justify-content: center;
+            align-items: center;
+            padding-right: 10px;
+            font-size: 12px;
+            color: #d4d4d8;
         }
     }
 </style>

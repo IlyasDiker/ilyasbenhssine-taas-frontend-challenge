@@ -15,7 +15,9 @@ export default {
       getClientUser(this.accoutStore.token).then((accountData)=>{
         if(accountData && !accountData.error){
           this.accoutStore.registerAccount(accountData);
+          this.accoutStore.notification = "You Github account was successfully authorized"
           this.$router.push('/app');
+          
         }
       },()=>{});
     }

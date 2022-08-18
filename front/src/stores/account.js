@@ -3,7 +3,8 @@ import { defineStore } from "pinia";
 export const useAccountStore = defineStore("account", {
     state: ()=> ({
         account: null,
-        token: null
+        token: null,
+        notification: null
     }), 
     actions: {
         setToken(token){

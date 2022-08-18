@@ -130,7 +130,6 @@ app.get('/api/commits', async (req, res)=>{
 
 app.get('/api/search', async (req, res)=>{
     let query = req.query.q
-    console.log(query);
     validateJWT(req).then((token) => {
         axios({
             method:'get',

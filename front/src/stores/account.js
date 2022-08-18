@@ -17,6 +17,10 @@ export const useAccountStore = defineStore("account", {
         },
         hasToken(){
             return this.token ? true : false;
+        },
+        logout(){
+            this.account = null;
+            this.token = null;
         }
     },
     persist:{

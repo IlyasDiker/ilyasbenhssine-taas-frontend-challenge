@@ -1,8 +1,10 @@
 <!-- TEXT_SECTION:header:START -->
-<h1 style="text-align:center">Ilyas Benhssine taas frontend challenge</h1>
-<div style="text-align:center;">
-    <p style="text-align:center;">A Vue app to overview github repositories commits history</p>
-</div>
+![image](https://cdn.discordapp.com/attachments/988418669895884830/1009951595955499060/unknown.png)
+
+# Ilyas Benhssine taas frontend challenge
+A Vue app to overview github repositories commits history
+
+
 <!-- TEXT_SECTION:header:END -->
 
 
@@ -19,7 +21,7 @@ this is a vue app created using vue-cli and scss and a simple express Nodejs bac
 
 Authorisation callbackUrl: `http://localhost:8080` 
 
-### Front end
+![image](https://cdn.discordapp.com/attachments/988418669895884830/1009944776688275606/unknown.png)
 
 ```bash
 cd front
@@ -42,8 +44,8 @@ cp .env.example .env
 ```bash
 npm run server
 ```
-
-### Back end
+------------------------------
+![image](https://cdn.discordapp.com/attachments/988418669895884830/1009944899552034913/unknown.png)
 
 ```bash
 cd server

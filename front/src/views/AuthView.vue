@@ -22,7 +22,7 @@ export default {
       authorizeClient(this.$route.query.code).then((tokenData)=>{
         if(tokenData.token){
           this.accoutStore.setToken(tokenData.token);
-          getClientUser(this.accoutStore.token).then((accountData)=>{
+          getClientUser().then((accountData)=>{
             if(accountData){
               this.accoutStore.registerAccount(accountData);
               this.$router.push('/app');

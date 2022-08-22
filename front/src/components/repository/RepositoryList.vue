@@ -59,7 +59,7 @@ export default {
         },
         searchField(to){
             if(to.length > 3 && this.getPresentationRepos().length == 0){
-                getSearchRepositories(this.accountStore.token, to, this.accountStore.account.login)
+                getSearchRepositories(to, this.accountStore.account.login)
                     .then((data)=>{
                         this.presentationRepos = data.items;
                     }, (err)=>{
@@ -70,7 +70,7 @@ export default {
     },
     methods: {
         getRepos(){
-            getRepositories(this.accountStore.token, this.paginationPage,this.sortFilter).then((data)=>{
+            getRepositories(this.paginationPage,this.sortFilter).then((data)=>{
                 data.forEach((elem)=>{
                     this.repositories.push(elem)
                 }) 
@@ -82,7 +82,7 @@ export default {
             })
         },
         loadMoreRepos(){
-            getRepositories(this.accountStore.token, (this.paginationPage + 1),this.sortFilter).then((data)=>{
+            getRepositories((this.paginationPage + 1),this.sortFilter).then((data)=>{
                 if(data && data.length > 0){
                     this.paginationPage++;
                     data.forEach((elem)=>{

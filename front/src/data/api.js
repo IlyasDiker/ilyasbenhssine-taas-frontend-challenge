@@ -1,3 +1,4 @@
+const { useAccountStore } = require("@/stores/account");
 const { default: axios } = require("axios");
 
 const API_URL = process.env.VUE_APP_API_URL;
@@ -10,103 +11,93 @@ exports.getAuthLink = () => {
     return url;
 }
 
+const sendRequest = (method, url, data, authorization = false) =>{
+    return new Promise((resolve, reject)=>{
+        let headers = {"Accept": "application/json"};
+        if(authorization){
+            let accountStore = useAccountStore();
+            if(!accountStore.token){
+                reject();
+                return;
+            }
+            headers.Authorization = `Bearer ${accountStore.token}`
+        }
+        axios({
+            method: method,
+            url: `${API_URL}/api${url}`,
+            headers: headers,
+            data: data
+        }).then((res)=>{
+            resolve(res.data);
+        }, (err) =>{
+            reject(err);
+        })
+    })
+}
+
 exports.authorizeClient = (code) => {
     return new Promise((resolve, reject) => {
-        axios({
-            method:'post',
-            url:`${API_URL}/api/auth`,
-            headers: {"Accept": "application/json"},
-            data:{
-                code: code
-            }
-        }).then((res)=>{
-            resolve(res.data);
+        sendRequest('post', '/auth', {
+            code: code
+        }, false).then((res)=>{
+            resolve(res);
         }, (err) =>{
             reject(err);
         })
     })
+    
 }
 
-exports.getClientUser = (token) => {
+exports.getClientUser = () => {
     return new Promise((resolve, reject) => {
-        axios({
-            method:'get',
-            url:`${API_URL}/api/user`,
-            headers: {
-                "Accept": "application/json",
-                "Authorization": `Bearer ${token}`
-            }
-        }).then((res)=>{
-            resolve(res.data);
+        sendRequest('get', '/user', null, true)
+        .then((res)=>{
+            resolve(res);
         }, (err) =>{
             reject(err);
         })
     })
 }
 
-exports.getRepositories = (token, page, sort) => {
+exports.getRepositories = (page, sort) => {
     return new Promise((resolve, reject) => {
-        axios({
-            method:'get',
-            url:`${API_URL}/api/repositories?page=${page}${sort ? '&sort='+sort : ''}`,
-            headers: {
-                "Accept": "application/json",
-                "Authorization": `Bearer ${token}`
-            }
-        }).then((res)=>{
-            resolve(res.data);
+        sendRequest('get', `/repositories?page=${page}${sort ? '&sort='+sort : ''}`, null, true)
+        .then((res)=>{
+            resolve(res);
         }, (err) =>{
             reject(err);
         })
     })
 }
 
-exports.getBranches = (token, repo_full_name) => {
+exports.getBranches = (repo_full_name) => {
     return new Promise((resolve, reject) => {
-        axios({
-            method:'get',
-            url:`${API_URL}/api/branches?repo=${repo_full_name}&per_page=100`,
-            headers: {
-                "Accept": "application/json",
-                "Authorization": `Bearer ${token}`
-            }
-        }).then((res)=>{
-            resolve(res.data);
+        sendRequest('get', `/branches?repo=${repo_full_name}&per_page=100`, null, true)
+        .then((res)=>{
+            resolve(res);
         }, (err) =>{
             reject(err);
         })
     })
 }
 
-exports.getCommits = (token, repo_full_name, page, sha) => {
+exports.getCommits = (repo_full_name, page, sha) => {
     return new Promise((resolve, reject) => {
-        axios({
-            method:'get',
-            url:`${API_URL}/api/commits?repo=${repo_full_name}&page=${page ?? 1}${sha ? '&sha='+sha : ''}`,
-            headers: {
-                "Accept": "application/json",
-                "Authorization": `Bearer ${token}`
-            }
-        }).then((res)=>{
-            resolve(res.data);
+        sendRequest('get',`/commits?repo=${repo_full_name}&page=${page ?? 1}${sha ? '&sha='+sha : ''}`, null, true)
+        .then((res)=>{
+            resolve(res);
         }, (err) =>{
             reject(err);
         })
     })
 }
 
-exports.getSearchRepositories = (token, query, user) => {
+exports.getSearchRepositories = (query, user) => {
     if(!query || !user) return;
     return new Promise((resolve, reject) => {
-        axios({
-            method:'get',
-            url:`${API_URL}/api/search?q=${query}${user? '%20user:'+user : ''}`,
-            headers: {
-                "Accept": "application/json",
-                "Authorization": `Bearer ${token}`
-            }
-        }).then((res)=>{
-            resolve(res.data);
+        sendRequest('get',`/search?q=${query}${user ? '%20user:'+user : ''}`, null, true)
+        .then((res)=>{
+            resolve(res);
         }, (err) =>{
             reject(err);
         })

@@ -39,7 +39,6 @@
 
 <script>
 import { getBranches, getCommits } from '@/data/api';
-import { useAccountStore } from '@/stores/account';
 import CommitItem from '@/components/commit/CommitItem.vue';
 import CommitSkeleton from '@/components/commit/CommitSkeleton.vue';
 import moment from 'moment';
@@ -61,7 +60,7 @@ export default {
             this.isLoading = true;
             this.commits = [];
             if (this.$route.params.id) {
-                getCommits(this.accountStore.token, this.$route.params.id, this.paginationCount)
+                getCommits(this.$route.params.id, this.paginationCount)
                     .then((data) => {
                     if (data && data.length > 0) {
                         this.selectedBranch = data[0].sha;
@@ -76,7 +75,7 @@ export default {
                 }, (err) => {
                     console.log(err);
                 });
-                getBranches(this.accountStore.token, this.$route.params.id)
+                getBranches(this.$route.params.id)
                     .then((data) => {
                     this.branches = []
                     if (data && data.length > 0) {
@@ -94,7 +93,7 @@ export default {
                 console.log('call more');
                 this.isLoading = true;
                 this.paginationCount++;
-                getCommits(this.accountStore.token, this.$route.params.id, this.paginationCount, this.selectedBranch)
+                getCommits(this.$route.params.id, this.paginationCount, this.selectedBranch)
                     .then((data) => {
                         if (data && data.length > 0) {
                             data.forEach((commit) => {
@@ -133,7 +132,7 @@ export default {
         },
         selectedBranch(to, from) {
             if(from && to){
-                getCommits(this.accountStore.token, this.$route.params.id, this.paginationCount, to)
+                getCommits(this.$route.params.id, this.paginationCount, to)
                     .then((data) => {
                         this.commits = [];
                         if (data && data.length > 0) {
@@ -155,8 +154,7 @@ export default {
         id: String
     },
     setup() {
-        const accountStore = useAccountStore();
-        return { accountStore , moment };
+        return { moment };
     },
     data() {
         return {

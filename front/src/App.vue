@@ -12,7 +12,7 @@ export default {
   },
   created () {
     if(this.accoutStore.hasToken()){
-      getClientUser(this.accoutStore.token).then((accountData)=>{
+      getClientUser().then((accountData)=>{
         if(accountData && !accountData.error){
           this.accoutStore.registerAccount(accountData);
           this.accoutStore.notification = "You Github account was successfully authorized"

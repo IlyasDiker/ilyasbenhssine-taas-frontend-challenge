@@ -13,6 +13,9 @@ exports.getAuthLink = () => {
 
 const sendRequest = (method, url, data, authorization = false) =>{
     return new Promise((resolve, reject)=>{
+        if(!method || !url){
+            reject({error:'Missing params'});
+        }
         let headers = {"Accept": "application/json"};
         if(authorization){
             let accountStore = useAccountStore();

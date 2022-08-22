@@ -20,7 +20,10 @@ export default {
     
     if(this.$route.query.code){
       authorizeClient(this.$route.query.code).then((tokenData)=>{
-        if(tokenData.token){
+        if(!tokenData.token){
+          this.accoutStore.setToken(null);
+          console.error(tokenData.error ?? 'Something went Wrong');
+        } else {
           this.accoutStore.setToken(tokenData.token);
           getClientUser().then((accountData)=>{
             if(accountData){
@@ -28,9 +31,6 @@ export default {
               this.$router.push('/app');
             }
           },()=>{});
-        } else {
-          this.accoutStore.setToken(null);
-          console.error(tokenData.error ?? 'Something went Wrong');
         }
       }, (err)=>{
         console.error(err.message ?? 'Something went Wrong');

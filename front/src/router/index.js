@@ -9,11 +9,10 @@ const routes = [
     component: AuthView,
     beforeEnter: (to, from, next) =>{
       const accountStore = useAccountStore();
-      if(!accountStore.isAuthenticated()){
-        return next(); 
-      } else {
+      if(accountStore.isAuthenticated()){
         return next({name:'app'});
       }
+      return next(); 
     },
   },
   {
@@ -22,11 +21,10 @@ const routes = [
     component: () => import('../views/AppView.vue'),
     beforeEnter: (to, from, next) =>{
       const accountStore = useAccountStore();
-      if(accountStore.isAuthenticated()){
-        return next(); 
-      } else {
+      if(!accountStore.isAuthenticated()){
         return next({name:'auth'});
       }
+      return next(); 
     },
     children:[
       {

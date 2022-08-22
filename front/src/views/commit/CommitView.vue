@@ -59,9 +59,9 @@ export default {
         LoadCommits() {
             this.isLoading = true;
             this.commits = [];
-            if (this.$route.params.id) {
-                getCommits(this.$route.params.id, this.paginationCount)
-                    .then((data) => {
+            if (!this.$route.params.id) return;
+            getCommits(this.$route.params.id, this.paginationCount)
+                .then((data) => {
                     if (data && data.length > 0) {
                         this.selectedBranch = data[0].sha;
                         data.forEach((commit) => {
@@ -75,8 +75,8 @@ export default {
                 }, (err) => {
                     console.log(err);
                 });
-                getBranches(this.$route.params.id)
-                    .then((data) => {
+            getBranches(this.$route.params.id)
+                .then((data) => {
                     this.branches = []
                     if (data && data.length > 0) {
                         data.forEach((commit) => {
@@ -86,11 +86,9 @@ export default {
                 }, (err) => {
                     console.log(err);
                 });
-            }
         },
         loadMore(){
             if(!this.isLoading && !this.paginationEnd){
-                console.log('call more');
                 this.isLoading = true;
                 this.paginationCount++;
                 getCommits(this.$route.params.id, this.paginationCount, this.selectedBranch)
@@ -113,10 +111,9 @@ export default {
         },
         handleScroll(){
             let commitListBoundingBox = document.querySelector('#commitsList').getBoundingClientRect();
-            if(commitListBoundingBox){
-                if(commitListBoundingBox.bottom < window.innerHeight){
-                    this.loadMore();
-                }
+            if(!commitListBoundingBox) return;
+            if(commitListBoundingBox.bottom < window.innerHeight){
+                this.loadMore();
             }
         }
     },

@@ -1,15 +1,16 @@
-let utils = require('../utils');
+const { getBranchesList } = require('../services/getBranchesList.service');
+let utils = require('../api/utils');
 
 exports.getBranches = async (req, res) => {
     let repo = req.query.repo
     utils.validateJWT(req).then((token) => {
-        utils.sendRequest('get', `https://api.github.com/repos/${repo}/branches?per_page=100`, null, token)
+        getBranchesList(token, repo)
         .then((data)=>{
             res.send(data);
         }, (err) =>{
-            utils.throwErr(res, err);
+            res.send({error: err});
         })
     }, (err) => {
-        utils.throwErr(res, err);
+        res.send({error: err});
     })
 }

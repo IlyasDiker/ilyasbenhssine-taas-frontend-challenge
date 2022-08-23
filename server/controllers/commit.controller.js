@@ -1,16 +1,16 @@
-let utils = require('../utils');
+let utils = require('../api/utils');
 
 exports.getCommit = async (req, res)=>{
     let repo = req.query.repo
     let page = req.query.page
     utils.validateJWT(req).then((token) => {
-        utils.sendRequest('get', `https://api.github.com/repos/${repo}/commits?page=${page ?? 1}`, null, token)
+        getBranchCommitsList(token, repo, page)
         .then((data)=>{
             res.send(data);
         }, (err) =>{
-            utils.throwErr(res, err);
+            res.send({error: err});
         })
     }, (err) => {
-        utils.throwErr(res, err);
+        res.send({error: err});
     })
 }

@@ -1,14 +1,14 @@
-let utils = require('../utils');
+const { getUserProfile } = require('../services/getUserProfile.service');
+let utils = require('../api/utils');
 
 exports.getUser = async (req, res) => {
     utils.validateJWT(req).then((token) => {
-        utils.sendRequest('get', 'https://api.github.com/user', null, token)
-        .then((data)=>{
+        getUserProfile(token).then((data)=>{
             res.send(data);
-        }, (err) =>{
-            utils.throwErr(res, err);
+        }, (err)=>{
+            res.send(err);
         })
     }, (err) => {
-        utils.throwErr(res, err);
+        res.send({error: err});
     })
 }

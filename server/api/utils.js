@@ -31,15 +31,6 @@ exports.sendRequest = (method, route, data, token) => {
     })
 }
 
-exports.getGithubCrendials = () => {
-    const client_id = process.env.CLIENT_ID;
-    const client_secret = process.env.GITHUB_OAUTH;
-    return {
-        client_id: client_id,
-        client_secret: client_secret 
-    }
-}
-
 exports.validateJWT = (req) => {
     return new Promise((resolve, reject) => {
         let authHeader = req.headers['authorization']
@@ -52,9 +43,4 @@ exports.validateJWT = (req) => {
             }
         })
     })
-}
-
-
-exports.throwErr = (res, err) => {
-    res.send({error: err.message});
 }

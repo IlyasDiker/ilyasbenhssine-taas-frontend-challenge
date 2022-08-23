@@ -1,30 +1,32 @@
-let utils = require('../utils');
+const { getRepositoryInformation } = require('../services/getRepositoryInformation.service');
+const { searchUserRepositories } = require('../services/searchUserRepositories.service');
+let utils = require('../api/utils');
 
 exports.getRepository = async (req, res) => {
     let page = req.query.page
     let sort = req.query.sort
     utils.validateJWT(req).then((token) => {
-        utils.sendRequest('get', `https://api.github.com/user/repos?page=${page}${sort ? '&sort='+sort : ''}`, null, token)
+        getRepositoryInformation(token, page, sort)
         .then((data)=>{
             res.send(data);
         }, (err) =>{
-            utils.throwErr(res, err);
+            res.send({error: err});
         })
     }, (err) => {
-        utils.throwErr(res, err);
+        res.send({error: err});
     })
 }
 
 exports.searchRepository = async (req, res)=>{
     let query = req.query.q
     utils.validateJWT(req).then((token) => {
-        utils.sendRequest('get', `https://api.github.com/search/repositories?q=${encodeURIComponent(query)}`, null, token)
+        searchUserRepositories(token, query)
         .then((data)=>{
             res.send(data);
         }, (err) =>{
-            utils.throwErr(res, err);
+            res.send({error: err});
         })
     }, (err) => {
-        utils.throwErr(res, err);
+        res.send({error: err});
     })
 }

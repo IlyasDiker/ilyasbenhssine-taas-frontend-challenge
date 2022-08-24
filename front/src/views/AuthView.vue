@@ -8,7 +8,8 @@
 </template>
 
 <script>
-import { getAuthLink, authorizeClient, getClientUser } from '@/data/api';
+import { authorizeClient, getAuthLink } from '@/data/auth';
+import { getClientUser } from '@/data/data';
 import { useAccountStore } from '@/stores/account';
 export default {
   setup(){

@@ -48,7 +48,7 @@
 import { useAccountStore } from '@/stores/account';
 import RepositoryItem from "./RepositoryItem.vue";
 import RepositorySkeleton from './RepositorySkeleton.vue';
-import { getRepositories } from '@/data/api';
+import { getRepositories } from '@/data/data';
 import { getSearchRepositories } from '../../data/api';
 export default {
     watch: {

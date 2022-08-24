@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { getBranches, getCommits } from '@/data/api';
+import { getBranches, getCommits } from '@/data/data';
 import CommitItem from '@/components/commit/CommitItem.vue';
 import CommitSkeleton from '@/components/commit/CommitSkeleton.vue';
 import moment from 'moment';

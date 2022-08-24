@@ -1,5 +1,3 @@
-let utils = require('../api/utils');
-const jwt = require('jsonwebtoken');
 const { getUserAccessToken } = require('../services/getUserAccessToken.service');
 
 exports.auth = async (req, res) => {
@@ -8,7 +6,7 @@ exports.auth = async (req, res) => {
         res.send({error: "No code was provided"})
         return;
     }
-    getUserAccessToken(code).then((data)=>{
+    getUserAccessToken(body.code).then((data)=>{
         res.send({
             token: data
         })

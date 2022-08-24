@@ -1,4 +1,4 @@
-const { sendRequest } = require("../api/utils");
+const { sendRequest } = require("../api/sendRequest");
 
 exports.getBranchesList = async (token, repo) => {
     return new Promise((resolve, reject)=>{

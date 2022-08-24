@@ -1,4 +1,4 @@
-const { sendRequest } = require("../api/utils");
+const { sendRequest } = require("../api/sendRequest");
 
 exports.searchUserRepositories = async (token, query) => {
     return new Promise((resolve, reject)=>{

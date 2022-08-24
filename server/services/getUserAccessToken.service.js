@@ -1,5 +1,6 @@
 const { getClientId, getGithubOAuth, getJwtSecret } = require("../config/config");
-const { sendRequest } = require("../api/utils");
+const { sendRequest } = require("../api/sendRequest");
+const jwt = require('jsonwebtoken');
 
 exports.getUserAccessToken = (code) => {
     return new Promise((resolve, reject)=>{
@@ -13,7 +14,7 @@ exports.getUserAccessToken = (code) => {
         sendRequest('post', 'https://github.com/login/oauth/access_token', {
             client_id: client_id,
             client_secret: client_secret,
-            code: body.code
+            code: code
         })
         .then((data)=>{
             let token = jwt.sign(data, jwt_secret);

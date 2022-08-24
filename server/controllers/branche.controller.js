@@ -1,16 +1,16 @@
 const { getBranchesList } = require('../services/getBranchesList.service');
-let utils = require('../api/utils');
 
 exports.getBranches = async (req, res) => {
     let repo = req.query.repo
-    utils.validateJWT(req).then((token) => {
-        getBranchesList(token, repo)
-        .then((data)=>{
-            res.send(data);
-        }, (err) =>{
-            res.send({error: err});
-        })
-    }, (err) => {
+    let token = res.locals.token
+    if(!repo){
+        res.send({error: "Missing repo"});
+        return;
+    }
+    getBranchesList(token, repo)
+    .then((data)=>{
+        res.send(data);
+    }, (err) =>{
         res.send({error: err});
     })
 }

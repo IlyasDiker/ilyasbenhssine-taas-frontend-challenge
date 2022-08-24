@@ -1,4 +1,4 @@
-const { sendRequest } = require("../api/utils");
+const { sendRequest } = require("../api/sendRequest");
 
 exports.getUserProfile = (token) => {
     return new Promise((resolve, reject)=>{

@@ -49,7 +49,7 @@ import { useAccountStore } from '@/stores/account';
 import RepositoryItem from "./RepositoryItem.vue";
 import RepositorySkeleton from './RepositorySkeleton.vue';
 import { getRepositories } from '@/data/data';
-import { getSearchRepositories } from '../../data/api';
+import { getSearchRepositories } from '../../data/data';
 export default {
     watch: {
         sortFilter(){

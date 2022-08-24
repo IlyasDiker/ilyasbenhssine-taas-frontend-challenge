@@ -4,7 +4,7 @@
 
 <script>
 import { useAccountStore } from '@/stores/account';
-import { getClientUser } from './data/api';
+import { getClientUser } from './data/data';
 export default {
   setup(){
     const accoutStore = useAccountStore();
